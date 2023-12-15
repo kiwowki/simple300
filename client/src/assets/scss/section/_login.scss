@@ -1,0 +1,33 @@
+.login_wrap {
+  text-align: center;
+  .login_header {
+    background-color: var(--pink1);
+    color: var(--black);
+    padding: 100px 0;
+    h3 {
+      font-family: var(--shrik);
+      color: var(--purple1);
+      font-size: 7vw;
+      -webkit-text-stroke: 1px black;
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: var(--white);
+      border-radius: 20px;
+      margin-bottom: 15px;
+    }
+  }
+
+  .login_form {
+    margin-top: 50px;
+    width: 360px;
+    margin: 0 auto;
+    padding: 3rem 0;
+
+    input {
+      margin-bottom: 10px;
+      border: 3px solid var(--pink2);
+      color: var(--purple1);
+      font-family: var(--shrik);
+    }
+  }
+}
