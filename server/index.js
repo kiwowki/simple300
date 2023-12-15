@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // 바디 패서 받는 거.. 
 
 // 페이지 별 경로 공통요소(express.router)
-// app.use("/api/post", require("./router/post.js"))
+app.use("/api/post", require("./router/post.js"))
 // app.use("/api/user", require("./router/user.js"))
 
 app.listen(port, () => {
