@@ -6,6 +6,7 @@ const multer = require("multer");
 // 스키마 만들기
 const { Post } = require("../model/Post.js");
 const { Counter } = require("../model/Counter.js");
+const { User } = require("../model/User.js");
 
 const setUpload = require("../util/upload.js")
 
@@ -13,21 +14,36 @@ const setUpload = require("../util/upload.js")
 
 // 글 쓰기
 router.post("/write", (req, res) => {
-    let temp = req.body;
+    // 원하는 정보만 가져오기(uid는 밑에서 가져올 예정)
+    let temp = {
+        title: req.body.title,
+        content: req.body.content,
+        image: req.body.image,
+    };
 
     Counter.findOne({ name: "counter" })
         .exec()
         .then((counter) => {
             temp.postNum = counter.postNum;
 
-            const BlogWrite = new Post(temp); // Post 스키마에 글 작성하기
-            BlogWrite
-                .save()
-                .then(() => {
-                    Counter.updateOne({ name: "counter" }, { $inc: { postNum: 1 } }).then(() => {
-                        res.status(200).json({ success: true });
-                    })
+            User.findOne({ uid: req.body.uid })
+                .exec()
+                .then((userInfo) => {
+                    // 몽고DB _id 가져오기?
+                    temp.author = userInfo._id
+
+                    const BlogWrite = new Post(temp); // Post 스키마에 글 작성하기
+                    BlogWrite
+                        .save()
+                        .then(() => {
+                            Counter.updateOne({ name: "counter" }, { $inc: { postNum: 1 } }).then(() => {
+                                res.status(200).json({ success: true });
+                            })
+                        })
+
                 })
+
+
         })
         .catch((err) => {
             console.log(err)
@@ -40,6 +56,8 @@ router.post("/list", (req, res) => {
     // sql의 select와 비슷
     Post
         .find()
+        // author 정보 가져오기
+        .populate("author")
         .exec()
         .then((result) => {
             res.status(200).json({ success: true, postList: result })
@@ -54,6 +72,7 @@ router.post("/detail", (req, res) => {
     // 하나 찾기(findOne)
     Post
         .findOne({ postNum: req.body.postNum })
+        .populate("author")
         .exec()
         .then((result) => {
             console.log(result);

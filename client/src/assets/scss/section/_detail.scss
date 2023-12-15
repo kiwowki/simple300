@@ -39,6 +39,10 @@
   }
   .detail_btn {
     text-align: right;
+    .list {
+      display: inline-block;
+      background-color: var(--purple2);
+    }
     button,
     a {
       background-color: var(--pink3);
@@ -56,5 +60,6 @@
       border-radius: 10px;
       margin-bottom: 10px;
     }
+    
   }
 }
